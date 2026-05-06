@@ -20,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button'
 
 import { TranslateModule } from '@ngx-translate/core'
 import { MatCardModule } from '@angular/material/card'
+import DOMPurify from 'dompurify'
 
 library.add(faUser, faEye, faHome, faArchive, faTrashAlt)
 
@@ -75,7 +76,7 @@ export class AdministrationComponent implements OnInit {
       next: (feedbacks) => {
         this.feedbackDataSource = feedbacks
         for (const feedback of this.feedbackDataSource) {
-          feedback.comment = this.sanitizer.bypassSecurityTrustHtml(feedback.comment)
+          feedback.comment = this.sanitizer.bypassSecurityTrustHtml(DOMPurify.sanitize(feedback.comment))
         }
         this.feedbackDataSource = new MatTableDataSource(this.feedbackDataSource)
         this.feedbackDataSource.paginator = this.paginatorFeedb
