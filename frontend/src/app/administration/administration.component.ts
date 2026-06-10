@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog'
 import { FeedbackService } from '../Services/feedback.service'
 import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table'
 import { UserService } from '../Services/user.service'
-import { Component, type OnInit, ViewChild, inject } from '@angular/core'
+import { Component, type OnInit, ViewChild, inject, SecurityContext } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faArchive, faEye, faHome, faTrashAlt, faUser } from '@fortawesome/free-solid-svg-icons'
@@ -75,7 +75,7 @@ export class AdministrationComponent implements OnInit {
       next: (feedbacks) => {
         this.feedbackDataSource = feedbacks
         for (const feedback of this.feedbackDataSource) {
-          feedback.comment = this.sanitizer.bypassSecurityTrustHtml(feedback.comment)
+          feedback.comment = this.sanitizer.sanitize(SecurityContext.HTML, feedback.comment)
         }
         this.feedbackDataSource = new MatTableDataSource(this.feedbackDataSource)
         this.feedbackDataSource.paginator = this.paginatorFeedb
